@@ -247,7 +247,7 @@ COMMIT ;
 - SAVEPOINT 이전 수행한 UPDATE는 취소되지 않음
 
 
-# 2-19. DDL
+# 2-19. DDL (1)
 
 **DDL(Data Definition Language)**
 - 데이터 구조 정의(객체 생성, 삭제, 변경) 언어
