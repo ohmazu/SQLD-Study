@@ -1,4 +1,4 @@
-# Programmers 문제풀이
+# Programmers 문제풀이 1
 
 ## 01. 잡은 물고기의 평균 길이 구하기
 ### 문제
