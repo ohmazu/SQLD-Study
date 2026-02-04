@@ -132,7 +132,7 @@ SELECT ANIMAL_ID, NAME,
 FROM ANIMAL_INS
 ORDER BY ANIMAL_ID ;
 ```
-1. `CASE WHEN 조건 THEN a ELSE b AS alias``
+1. `CASE WHEN 조건 THEN a ELSE b AS alias`
 - if문의 형태가 필요하면 CASE WHEN ~ THEN ~ ELSE 활용
 
 
@@ -151,3 +151,45 @@ FROM PRODUCT
 GROUP BY LEFT(PRODUCT_CODE, 2)
 ORDER BY CATEGORY;
 ```  
+1. `LEFT(a, n)`
+- 컬럼 a(문자열) 왼쪽에서 n개 글자만 자르는 함수
+
+## 10. 상품 별 오프라인 매출 구하기
+### 문제
+다음은 어느 의류 쇼핑몰에서 판매중인 상품들의 상품 정보를 담은 PRODUCT 테이블과 오프라인 상품 판매 정보를 담은 OFFLINE_SALE 테이블 입니다. PRODUCT 테이블은 아래와 같은 구조로 PRODUCT_ID, PRODUCT_CODE, PRICE는 각각 상품 ID, 상품코드, 판매가를 나타냅니다.
+
+OFFLINE_SALE 테이블은 아래와 같은 구조로 되어있으며 OFFLINE_SALE_ID, PRODUCT_ID, SALES_AMOUNT, SALES_DATE는 각각 오프라인 상품 판매 ID, 상품 ID, 판매량, 판매일을 나타냅니다.
+
+PRODUCT 테이블과 OFFLINE_SALE 테이블에서 상품코드 별 매출액(판매가 * 판매량) 합계를 출력하는 SQL문을 작성해주세요. 결과는 매출액을 기준으로 내림차순 정렬해주시고 매출액이 같다면 상품코드를 기준으로 오름차순 정렬해주세요.
+
+### 답
+```sql
+SELECT P.PRODUCT_CODE, SUM(P.PRICE*O.SALES_AMOUNT) AS SALES
+FROM PRODUCT P
+JOIN OFFLINE_SALE O
+ON P.PRODUCT_ID = O.PRODUCT_ID
+GROUP BY PRODUCT_CODE
+ORDER BY SALES DESC, PRODUCT_CODE ;
+``` 
+- COUNT(*)*PRICE가 안되는 이유
+    - 행의 개수 != 판매 개수
+
+문제와 컬럼 설명을 잘 보장~~~
+
+## 11. 
+### 문제
+다음은 아이스크림 가게의 상반기 주문 정보를 담은 FIRST_HALF 테이블과 아이스크림 성분에 대한 정보를 담은 ICECREAM_INFO 테이블입니다. FIRST_HALF 테이블 구조는 다음과 같으며, SHIPMENT_ID, FLAVOR, TOTAL_ORDER 는 각각 아이스크림 공장에서 아이스크림 가게까지의 출하 번호, 아이스크림 맛, 상반기 아이스크림 총주문량을 나타냅니다. FIRST_HALF 테이블의 기본 키는 FLAVOR입니다.
+
+ICECREAM_INFO 테이블 구조는 다음과 같으며, FLAVOR, INGREDITENT_TYPE 은 각각 아이스크림 맛, 아이스크림의 성분 타입을 나타냅니다. INGREDIENT_TYPE에는 아이스크림의 주 성분이 설탕이면 sugar_based라고 입력되고, 아이스크림의 주 성분이 과일이면 fruit_based라고 입력됩니다. ICECREAM_INFO의 기본 키는 FLAVOR입니다. ICECREAM_INFO테이블의 FLAVOR는 FIRST_HALF 테이블의 FLAVOR의 외래 키입니다.
+
+상반기 동안 각 아이스크림 성분 타입과 성분 타입에 대한 아이스크림의 총주문량을 총주문량이 작은 순서대로 조회하는 SQL 문을 작성해주세요. 이때 총주문량을 나타내는 컬럼명은 TOTAL_ORDER로 지정해주세요.
+
+### 답
+```sql
+SELECT I.INGREDIENT_TYPE, SUM(TOTAL_ORDER) AS TOTAL_ORDER
+FROM FIRST_HALF F
+JOIN ICECREAM_INFO I
+ON F.FLAVOR = I.FLAVOR
+GROUP BY INGREDIENT_TYPE
+ORDER BY TOTAL_ORDER ;
+``` 
