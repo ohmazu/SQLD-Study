@@ -150,7 +150,8 @@ SELECT
 FROM PRODUCT
 GROUP BY LEFT(PRODUCT_CODE, 2)
 ORDER BY CATEGORY;
-```  
+```
+
 1. `LEFT(a, n)`
 - 컬럼 a(문자열) 왼쪽에서 n개 글자만 자르는 함수
 
